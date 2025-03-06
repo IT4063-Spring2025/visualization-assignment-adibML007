@@ -35,7 +35,7 @@
 # 
 # **Task 👨🏻‍💻**: Keep coming back to update this cell as you need to import new packages.
 
-# In[1]:
+# In[ ]:
 
 
 import pandas as pd
@@ -48,7 +48,7 @@ import plotly.express as px
 from wordcloud import WordCloud
 
 # Configure pandas to display 500 rows; otherwise it will truncate the output
-pd.set_option('display.max_rows', 500)
+pd.set_option('display.max_rows', 10)
 
 # To plot pretty figures
 get_ipython().run_line_magic('matplotlib', 'inline')
@@ -69,20 +69,27 @@ plt.style.use("bmh")
 # 
 # #### 👨🏻‍💻 1.1: Import the data
 
-# In[2]:
+# In[ ]:
 
 
 # 👨🏻‍💻 - Import the dataset in the project (datasets/anscombes_quartet.csv) into a dataframe called (anscombes_quartet)
+anscombes_quartet = pd.read_csv('./datasets/anscombes_quartet.csv')
+anscombes_quartet.head()
 
 
 # #### 👨🏻‍💻 1.2: Split the data into four datasets
 # the imported dataset contains four datasets combined into one file. Each 2 columns constitute a dataset. Split the data into four datasets (df1, df2, df3, df4).
 
-# In[3]:
+# In[ ]:
 
 
-# 👨🏻‍💻 - Split the dataframe into 4 dataframes (df1, df2, df3, df3), such that each dataframe contains 2 columns (x, y) and 11 rows
+# 👨🏻‍💻 - Split the dataframe into 4 dataframes (df1, df2, df3, df4), such that each dataframe contains 2 columns (x, y) and 11 rows
 # Make sure you rename the columns to (x, y) instead of (`x_I`,`y_I`,`x_II`,`y_II`,`x_III`,`y_III`,`x_IV`,`y_IV`)
+
+df1 = anscombes_quartet[['x_I', 'y_I']].rename(columns={'x_I': 'x', 'y_I': 'y'})
+df2 = anscombes_quartet[['x_II', 'y_II']].rename(columns={'x_II': 'x', 'y_II': 'y'})
+df3 = anscombes_quartet[['x_III', 'y_III']].rename(columns={'x_III': 'x', 'y_III': 'y'})
+df4 = anscombes_quartet[['x_IV', 'y_IV']].rename(columns={'x_IV': 'x', 'y_IV': 'y'})
 
 
 # #### 👨🏻‍💻 1.3: Show a sample of the data for each dataset
@@ -94,10 +101,14 @@ plt.style.use("bmh")
 #   * You'll need to use the `display` function to display multiple outputs in a single cell.
 # </details>
 
-# In[4]:
+# In[ ]:
 
 
 # 👨🏻‍💻 - Get a random sample of 2 records from each dataframe
+display(df1.sample(2))
+display(df2.sample(2))
+display(df3.sample(2))
+display(df4.sample(2))
 
 
 # #### 👨🏻‍💻 1.4: Show the statistical summary for each dataset in a single cell
@@ -108,13 +119,19 @@ plt.style.use("bmh")
 #   * You'll need to use the `display` function to display multiple outputs in a single cell.
 # </details>
 
-# In[5]:
+# In[ ]:
 
 
-# 👨🏻‍💻 - Get the statistical summaries of the 4 dataframes (df1, df2, df3, df3)
+# 👨🏻‍💻 - Get the statistical summaries of the 4 dataframes (df1, df2, df3, df4)
+display(df1.describe())
+display(df2.describe())
+display(df3.describe())
+display(df4.describe())
 
 
 # **❓ What do you notice and what could this mean?**
+# 
+# Despite the datasets having nearly identical statistical properties, their scatter plots reveal distinct patterns. This highlights the importance of visualizing data rather than relying solely on summary statistics.
 
 # > 🚩 : Make a git commit here
 
@@ -123,10 +140,39 @@ plt.style.use("bmh")
 # 
 # Use `Matplotlib` to plot the data. Each dataset should be plotted in a separate subplot.
 
-# In[6]:
+# In[ ]:
 
 
 # 👨🏻‍💻 - Plot the 4 dataframes in a 2x2 grid using Matplotlib
+
+fig, axs = plt.subplots(2, 2, figsize=(10, 10))
+
+# Plot df1
+axs[0, 0].scatter(df1['x'], df1['y'])
+axs[0, 0].set_title('Dataset I')
+axs[0, 0].set_xlabel('x')
+axs[0, 0].set_ylabel('y')
+
+# Plot df2
+axs[0, 1].scatter(df2['x'], df2['y'])
+axs[0, 1].set_title('Dataset II')
+axs[0, 1].set_xlabel('x')
+axs[0, 1].set_ylabel('y')
+
+# Plot df3
+axs[1, 0].scatter(df3['x'], df3['y'])
+axs[1, 0].set_title('Dataset III')
+axs[1, 0].set_xlabel('x')
+axs[1, 0].set_ylabel('y')
+
+# Plot df4
+axs[1, 1].scatter(df4['x'], df4['y'])
+axs[1, 1].set_title('Dataset IV')
+axs[1, 1].set_xlabel('x')
+axs[1, 1].set_ylabel('y')
+
+plt.tight_layout()
+plt.show()
 
 
 # **❓ What do you notice and what does this mean?**
@@ -142,7 +188,7 @@ plt.style.use("bmh")
 
 # #### 👨🏻‍💻 2.1: Import the data (done for you)
 
-# In[8]:
+# In[ ]:
 
 
 # 👨🏻‍💻 I imported the iris dataset from sklearn and converted it to a dataframe for you
@@ -157,18 +203,18 @@ display(iris_df.head())
 
 # #### 👨🏻‍💻 2.2: Show the a summary about the data frame, its columns, and the data types of each column
 
-# In[9]:
+# In[ ]:
 
 
-
+iris_df.info()
 
 
 # #### 👨🏻‍💻 2.3: Print a random sample of 6 records from the dataset.
 
-# In[10]:
+# In[ ]:
 
 
-
+iris_df.sample(6)
 
 
 # > 🚩 : Make a git commit here
@@ -181,10 +227,20 @@ display(iris_df.head())
 # * Make sure to add a legend that shows the species **names**.
 # 
 
-# In[11]:
+# In[ ]:
 
 
 # Using Matplotlib
+species_counts = iris_df['target'].value_counts().sort_index()
+species_names = [iris.target_names[i] for i in species_counts.index]
+
+plt.figure(figsize=(8, 6))
+bars = plt.bar(species_names, species_counts, color=['blue', 'orange', 'green'])
+plt.title('Frequency of Each Species in the Iris Dataset')
+plt.xlabel('Species')
+plt.ylabel('Frequency')
+plt.legend(bars, species_names)
+plt.show()
 
 
 # > 🚩 : Make a git commit here
@@ -192,10 +248,17 @@ display(iris_df.head())
 # #### 👨🏻‍💻 2.5: Using `Seaborn` Plot a figure to show the frequency of each of the species types (target) in this data set.
 # Recreate the same plot using `Seaborn`.
 
-# In[12]:
+# In[ ]:
 
 
 # Using Seaborn
+sns.countplot(x='target', data=iris_df, palette=['blue', 'orange', 'green'])
+plt.title('Frequency of Each Species in the Iris Dataset')
+plt.xlabel('Species')
+plt.ylabel('Frequency')
+plt.xticks(ticks=[0, 1, 2], labels=species_names)
+plt.legend(bars, species_names)
+plt.show()
 
 
 # > 🚩 : Make a git commit here
@@ -209,10 +272,16 @@ display(iris_df.head())
 #   <img alt="Iris Dataset Scatterplot" src="https://github.com/IT4063C/images/raw/main/visualization-assignment/sepal-length-vs-width.png" />
 # </details>
 
-# In[13]:
+# In[ ]:
 
 
-
+# Create a scatterplot matrix using Matplotlib to show the relationship between sepal_length and sepal_width
+plt.figure(figsize=(8, 6))
+plt.scatter(iris_df['sepal length (cm)'], iris_df['sepal width (cm)'], alpha=0.7)
+plt.title('Scatterplot Matrix: Sepal Length vs Sepal Width')
+plt.xlabel('Sepal Length (cm)')
+plt.ylabel('Sepal Width (cm)')
+plt.show()
 
 
 # > 🚩 : Make a git commit here
@@ -227,10 +296,16 @@ display(iris_df.head())
 #   <img alt="Iris Dataset Scatterplot" src="https://github.com/IT4063C/images/raw/main/visualization-assignment/sepal-length-vs-width-2.png" />
 # </details>
 
-# In[14]:
+# In[ ]:
 
 
-
+# Create a scatterplot matrix using Matplotlib to show the relationship between sepal_length and sepal_width with transparency
+plt.figure(figsize=(8, 6))
+plt.scatter(iris_df['sepal length (cm)'], iris_df['sepal width (cm)'], alpha=0.3)
+plt.title('Scatterplot Matrix: Sepal Length vs Sepal Width')
+plt.xlabel('Sepal Length (cm)')
+plt.ylabel('Sepal Width (cm)')
+plt.show()
 
 
 # > 🚩 : Make a git commit here
@@ -254,10 +329,19 @@ display(iris_df.head())
 #   <img alt="Iris Dataset Scatterplot" src="https://github.com/IT4063C/images/raw/main/visualization-assignment/sepal-length-vs-width-3.png" />
 # </details>
 
-# In[15]:
+# In[ ]:
 
 
+# Create a bubble plot using Matplotlib to show the relationship between sepal_length and sepal_width
+# with the size of the dots determined by petal width
 
+plt.figure(figsize=(10, 8))
+plt.scatter(iris_df['sepal length (cm)'], iris_df['sepal width (cm)'], 
+            s=iris_df['petal width (cm)'] * 100, alpha=0.5)
+plt.title('Bubble Plot: Sepal Length vs Sepal Width (Size by Petal Width)')
+plt.xlabel('Sepal Length (cm)')
+plt.ylabel('Sepal Width (cm)')
+plt.show()
 
 
 # > 🚩 : Make a git commit here
@@ -286,10 +370,20 @@ display(iris_df.head())
 # </details>
 # 
 
-# In[16]:
+# In[ ]:
 
 
+# Create a bubble plot using Matplotlib to show the relationship between sepal_length and sepal_width
+# with the size of the dots determined by petal width and color by species type
 
+plt.figure(figsize=(10, 8))
+scatter = plt.scatter(iris_df['sepal length (cm)'], iris_df['sepal width (cm)'], 
+                      s=iris_df['petal width (cm)'] * 100, c=iris_df['target'], cmap='viridis', alpha=0.5)
+plt.title('Bubble Plot: Sepal Length vs Sepal Width (Size by Petal Width, Color by Species)')
+plt.xlabel('Sepal Length (cm)')
+plt.ylabel('Sepal Width (cm)')
+plt.colorbar(scatter, ticks=[0, 1, 2], format=plt.FuncFormatter(lambda val, loc: species_names[int(val)]))
+plt.show()
 
 
 # > 🚩 : Make a git commit here
@@ -302,10 +396,20 @@ display(iris_df.head())
 #   <img alt="Iris Dataset Scatterplot" src="https://github.com/IT4063C/images/raw/main/visualization-assignment/sepal-length-vs-width-5.png" />
 # </details>
 
-# In[17]:
+# In[ ]:
 
 
+# Create a bubble plot using Seaborn to show the relationship between sepal_length and sepal_width
+# with the size of the dots determined by petal width and color by species type
 
+plt.figure(figsize=(10, 8))
+sns.scatterplot(data=iris_df, x='sepal length (cm)', y='sepal width (cm)', 
+                size='petal width (cm)', hue='target', palette='viridis', alpha=0.5, sizes=(20, 200))
+plt.title('Bubble Plot: Sepal Length vs Sepal Width (Size by Petal Width, Color by Species)')
+plt.xlabel('Sepal Length (cm)')
+plt.ylabel('Sepal Width (cm)')
+plt.legend(title='Species', labels=species_names)
+plt.show()
 
 
 # > 🚩 : Make a git commit here
@@ -317,7 +421,17 @@ display(iris_df.head())
 # In[ ]:
 
 
+fig = px.scatter(iris_df, x='sepal length (cm)', y='sepal width (cm)', 
+                 size='petal width (cm)', color='target', 
+                 hover_name='target', 
+                 labels={'target': 'Species'},
+                 title='Bubble Plot: Sepal Length vs Sepal Width (Size by Petal Width, Color by Species)',
+                 color_continuous_scale=px.colors.sequential.Viridis)
 
+# Update the color bar to show species names
+fig.update_coloraxes(colorbar=dict(tickvals=[0, 1, 2], ticktext=species_names))
+
+fig.show()
 
 
 # > 🚩 : Make a git commit here
@@ -329,7 +443,7 @@ display(iris_df.head())
 # 
 # #### 👨🏻‍💻 3.1: Import the data (done for you)
 
-# In[18]:
+# In[ ]:
 
 
 bitcoin_df = pd.read_table("./datasets/bitcoin.txt", sep=" ")
@@ -339,10 +453,11 @@ bitcoin_df.info()
 
 # #### 👨🏻‍💻 3.2: Print the last 3 records of the dataset
 
-# In[19]:
+# In[ ]:
 
 
-
+# Print the last three records of the dataset bitcoin_df
+bitcoin_df.tail(3)
 
 
 # #### 👨🏻‍💻 3.3: Visualize the data using a line chart
@@ -356,10 +471,16 @@ bitcoin_df.info()
 # </details>
 # 
 
-# In[20]:
+# In[ ]:
 
 
 # 👨🏻‍💻 - Plot the bitcoin price over time, with a wide figure size
+plt.figure(figsize=(14, 7))
+plt.plot(bitcoin_df['date'], bitcoin_df['value'])
+plt.title('Bitcoin Price Over Time')
+plt.xlabel('Date')
+plt.ylabel('Price (USD)')
+plt.show()
 
 
 # > 🚩 : Make a git commit here
@@ -373,10 +494,14 @@ bitcoin_df.info()
 # </details>
 # 
 
-# In[21]:
+# In[ ]:
 
 
+import plotly.express as px
 
+fig = px.line(bitcoin_df, x='date', y='value', title='Bitcoin Price Over Time')
+fig.update_layout(xaxis_title='Date', yaxis_title='Price (USD)')
+fig.show()
 
 
 # > 🚩 : Make a git commit here
@@ -387,7 +512,7 @@ bitcoin_df.info()
 # 
 # #### 👨🏻‍💻 4.1: Import the data (done for you)
 
-# In[22]:
+# In[ ]:
 
 
 babies_wide_df = pd.read_csv("./datasets/names-wide.csv")
@@ -408,7 +533,17 @@ babies_wide_df.head()
 # In[ ]:
 
 
+import plotly.express as px
 
+# Melt the dataframe to long format
+babies_long_df = babies_wide_df.melt(id_vars='year', var_name='name', value_name='count')
+
+# Create the stacked area chart
+fig = px.area(babies_long_df, x='year', y='count', color='name', 
+              title='Evolution of the Popularity of Names Over Time',
+              labels={'year': 'Year', 'count': 'Count', 'name': 'Name'})
+
+fig.show()
 
 
 # > 🚩 : Make a git commit here
@@ -418,7 +553,7 @@ babies_wide_df.head()
 # 
 # This is not a task, but only here to share with you how you can generate word clouds using `wordcloud` and `matplotlib` for your own projects.
 
-# In[23]:
+# In[ ]:
 
 
 with open('./datasets/martin-luther-king-i-have-a-dream-speech.txt') as f:
@@ -426,7 +561,7 @@ with open('./datasets/martin-luther-king-i-have-a-dream-speech.txt') as f:
 print(contents)
 
 
-# In[24]:
+# In[ ]:
 
 
 # Create the wordcloud object
@@ -436,7 +571,7 @@ print(wordcloud.words_)
 
 # notice how the results is a normalized dataset of all the words. So the most occurring word has a value of 1, and the least occurring word has a value approaching 0.
 
-# In[25]:
+# In[ ]:
 
 
 import matplotlib.pyplot as plt
@@ -455,7 +590,9 @@ plt.show()
 # In[ ]:
 
 
+"A Sankey Diagram is a visualisation technique that allows to display flows. Several entities (nodes) are represented by rectangles or text. Their links are represented with arrows or arcs that have a width proportional to the importance of the flow." ([Data to Viz - Sankey Diagrams](https://www.data-to-viz.com/graph/sankey.html))
 
+**✨ Extra Credit Task 👨🏻‍💻**: For 3 Points: Follow [this tutorial](https://www.python-graph-gallery.com/sankey-diagram-with-python-and-plotly) on how to create a Sankey Diagram using `plotly`.
 
 
 # > 🚩 : Make a git commit here
@@ -470,7 +607,30 @@ plt.show()
 # In[ ]:
 
 
+import plotly.graph_objects as go
 
+# Define the Sankey diagram nodes and links
+nodes = dict(
+    label=['Amanda', 'Ashley', 'Betty', 'Deborah', 'Dorothy', 'Helen', 'Linda', 'Patricia'],
+    pad=15,
+    thickness=20,
+    line=dict(color='black', width=0.5)
+)
+
+links = dict(
+    source=[0, 1, 2, 3, 4, 5, 6, 7],
+    target=[1, 2, 3, 4, 5, 6, 7, 0],
+    value=[10, 20, 30, 40, 50, 60, 70, 80]
+)
+
+# Create the Sankey diagram
+fig = go.Figure(data=[go.Sankey(node=nodes, link=links)])
+
+# Update the layout
+fig.update_layout(title_text='Sankey Diagram Example', font_size=10)
+
+# Show the figure
+fig.show()
 
 
 # > 🚩 : Make a git commit here
@@ -493,7 +653,7 @@ plt.show()
 
 # Make sure you run the following cell; this converts this Jupyter notebook to a Python script. and will make the process of reviewing your code on GitHub easier
 
-# In[27]:
+# In[ ]:
 
 
 # 🦉: The following command converts this Jupyter notebook to a Python script.
